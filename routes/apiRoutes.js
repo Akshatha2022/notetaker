@@ -1,4 +1,4 @@
-var db = require("../db/db.json");
+var db = require("../db.json");
 var fs = require("fs");
 
 // ROUTING
@@ -6,8 +6,14 @@ var fs = require("fs");
 module.exports = function (app) {
   // API GET Request
   app.get("/api/notes", function (req, res) {
+    console.log("I am here")
     // Read the db.json file and return all saved notes as JSON
-    res.json(db);
+    fs.readFile("../db.json", JSON.stringify(db), function () {
+      res.json(db);
+    });
+    console.log(db);
+    //fs.readFile()
+    //res.json(db);
   });
 
   // API POST Request
@@ -19,7 +25,7 @@ module.exports = function (app) {
       obj.id = i + 1;
     });
     // Return the new note to the client
-    fs.writeFile("./db/db.json", JSON.stringify(db), function () {
+    fs.writeFile("../db.json", JSON.stringify(db), function () {
       res.json(db);
     });
   });
@@ -34,7 +40,7 @@ module.exports = function (app) {
       obj.id = i + 1;
     });
     // Return the remaining notes to the client
-    fs.writeFile("./db/db.json", JSON.stringify(db), function () {
+    fs.writeFile("../db.json", JSON.stringify(db), function () {
       res.json(db);
     });
   });
